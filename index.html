@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book an Appointment — The Very Busy Office</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1d1a2e;--muted:#6b6780;--bg:#fbf6ee;--card:#fff;--accent:#e2574c;--accent2:#2f6f62;--line:#e8e1d4;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:640px;margin:0 auto;padding:28px 18px 60px}
+  .badge{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:#fff;padding:5px 10px;border-radius:999px}
+  h1{font-family:Fraunces,serif;font-weight:800;font-size:clamp(30px,7vw,44px);line-height:1.1;margin:14px 0 8px}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .status{display:flex;gap:10px;align-items:center;background:#fff3f1;border:1px solid #f5cfc9;color:#8f2f27;padding:10px 14px;border-radius:12px;font-size:14px;margin-bottom:22px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;animation:pulse 1.4s infinite}
+  @keyframes pulse{50%{opacity:.3}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(29,26,46,.06)}
+  label{display:block;font-weight:600;font-size:14px;margin:16px 0 6px}
+  label:first-child{margin-top:0}
+  input,select,textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fffdf9;color:var(--ink)}
+  textarea{min-height:70px;resize:vertical}
+  .hint{font-size:12px;color:var(--muted);margin-top:4px}
+  .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+  .slot{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fffdf9;text-align:center;cursor:pointer;font-size:14px;user-select:none}
+  .slot small{display:block;font-size:11px;color:var(--muted)}
+  .slot.taken{background:#f3f1ec;color:#aaa;cursor:not-allowed;text-decoration:line-through}
+  .slot.taken small{text-decoration:none}
+  .slot.sel{border-color:var(--accent2);background:#e8f3f0;color:var(--accent2);font-weight:600}
+  .dur{display:flex;flex-direction:column;gap:8px}
+  .opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:400;margin:0}
+  .opt input{width:auto;margin-top:4px}
+  .opt b{font-weight:600}
+  .chk{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:14px}
+  .chk input{width:auto;margin-top:4px}
+  button{font:inherit;font-weight:600;border:0;border-radius:12px;padding:13px 18px;cursor:pointer}
+  .primary{width:100%;background:var(--accent);color:#fff;margin-top:20px;font-size:16px}
+  .primary:hover{filter:brightness(.95)}
+  .err{color:var(--accent);font-size:13px;margin-top:10px;min-height:1em}
+  .ticket{display:none}
+  .ticket .card{border-style:dashed;border-width:2px}
+  .tid{font-family:Fraunces,serif;font-size:26px;font-weight:800;color:var(--accent2)}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .row span:first-child{color:var(--muted)}
+  .row span:last-child{text-align:right;font-weight:500}
+  .terms{font-size:13px;color:var(--muted);margin:14px 0 0;padding-left:18px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .actions a,.actions button{flex:1;min-width:150px;text-align:center;text-decoration:none;border-radius:12px;padding:12px;font-weight:600}
+  .wa{background:#25d366;color:#fff}
+  .copy{background:var(--ink);color:#fff}
+  .ghost{background:transparent;color:var(--muted);text-decoration:underline;width:100%;margin-top:8px}
+  .stamp{float:right;transform:rotate(8deg);border:2px solid var(--accent);color:var(--accent);font-weight:800;font-size:12px;padding:4px 8px;border-radius:6px;letter-spacing:.06em}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">Office of a Very Important Person</span>
+  <h1>Book an appointment with me 📅</h1>
+  <p class="sub">You said my time is very important. I agree. So from now on, talking to me is by appointment only.</p>
+  <div class="status"><span class="dot"></span><span><b>Current status:</b> <span id="status">Extremely busy (as you mentioned)</span></span></div>
+
+  <form id="f" class="card" novalidate>
+    <label for="name">Your name</label>
+    <input id="name" placeholder="The person who said I'm too busy" autocomplete="name">
+
+    <label for="reason">Purpose of meeting</label>
+    <select id="reason">
+      <option value="">— Select a valid reason —</option>
+      <option>Just to talk (high-level discussion)</option>
+      <option>Gossip (urgent, cannot wait)</option>
+      <option>Need advice I will probably ignore</option>
+      <option>Rant session (bring snacks)</option>
+      <option>Apologising for calling me busy</option>
+      <option>Planning food / outing</option>
+      <option>Other (please justify below)</option>
+    </select>
+
+    <label for="date">Preferred date</label>
+    <input id="date" type="date">
+    <div class="hint">Weekends subject to availability and mood.</div>
+
+    <label>Available time slots</label>
+    <div class="slots" id="slots"></div>
+
+    <label>Meeting duration</label>
+    <div class="dur">
+      <label class="opt"><input type="radio" name="dur" value="5 minutes (Standard)" checked><span><b>5 minutes</b> — Standard. Please be concise.</span></label>
+      <label class="opt"><input type="radio" name="dur" value="15 minutes (Premium)"><span><b>15 minutes</b> — Premium. Requires chocolate in advance.</span></label>
+      <label class="opt"><input type="radio" name="dur" value="Unlimited (Best Friend Plan)"><span><b>Unlimited</b> — Best Friend Plan. Subject to manager approval (me).</span></label>
+    </div>
+
+    <label for="notes">Agenda / anything else</label>
+    <textarea id="notes" placeholder="Kindly submit agenda in advance so I can prepare."></textarea>
+
+    <label class="chk" style="margin-top:18px"><input type="checkbox" id="agree"><span>I accept that my appointment may be rescheduled, and I agree to never again pretend I don't know how important this person's time is.</span></label>
+
+    <button class="primary" type="submit">Request appointment</button>
+    <div class="err" id="err"></div>
+  </form>
+
+  <div class="ticket" id="ticket">
+    <div class="card">
+      <span class="stamp">PENDING APPROVAL</span>
+      <div style="font-size:13px;color:var(--muted)">Appointment reference</div>
+      <div class="tid" id="tid"></div>
+      <div style="margin-top:12px" id="rows"></div>
+      <ul class="terms">
+        <li>Please arrive 2 minutes early. Late arrivals will be charged one samosa per minute.</li>
+        <li>Confirmation will be sent at my earliest convenience (which may be a while, I'm very busy).</li>
+        <li>Your request isn't sent until you send it to me below 👇</li>
+      </ul>
+      <div class="actions">
+        <a class="wa" id="wa" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
+        <button class="copy" id="copy" type="button">Copy request</button>
+      </div>
+      <button class="ghost" id="again" type="button">Book another appointment</button>
+    </div>
+  </div>
+
+  <footer>© The Very Busy Office · All conversations by appointment only</footer>
+</div>
+
+<script>
+  const statuses=["Extremely busy (as you mentioned)","In a very important meeting with my snacks","Currently being too important","Busy. Ask my assistant (also me)","Available… for VIPs only"];
+  let si=0;setInterval(()=>{si=(si+1)%statuses.length;document.getElementById('status').textContent=statuses[si]},3000);
+
+  const slots=[
+    ["9:00 AM","Sleeping",true],["10:30 AM","Available",false],["12:00 PM","Lunch — sacred",true],
+    ["2:00 PM","Available",false],["3:30 PM","Nap meeting",true],["5:00 PM","Available",false],
+    ["7:00 PM","Chai break",false],["9:00 PM","Series time",true],["11:00 PM","Late-night talk",false]
+  ];
+  let chosen="";
+  const box=document.getElementById('slots');
+  slots.forEach(([t,s,taken])=>{
+    const d=document.createElement('div');d.className='slot'+(taken?' taken':'');
+    d.innerHTML=t+'<small>'+s+'</small>';
+    if(!taken)d.onclick=()=>{document.querySelectorAll('.slot').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');chosen=t};
+    box.appendChild(d);
+  });
+  const dt=document.getElementById('date');
+  const today=new Date();today.setMinutes(today.getMinutes()-today.getTimezoneOffset());
+  dt.min=today.toISOString().slice(0,10);
+
+  let msg="";
+  document.getElementById('f').addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=document.getElementById('name').value.trim();
+    const reason=document.getElementById('reason').value;
+    const date=dt.value;
+    const dur=document.querySelector('input[name=dur]:checked').value;
+    const notes=document.getElementById('notes').value.trim();
+    const err=document.getElementById('err');
+    if(!name)return err.textContent="Name is required. I don't talk to strangers.";
+    if(!reason)return err.textContent="Please select a valid reason. 'Just because' is not accepted.";
+    if(!date)return err.textContent="Please pick a date.";
+    if(!chosen)return err.textContent="Please pick an available time slot.";
+    if(!document.getElementById('agree').checked)return err.textContent="You must accept the terms. They are very reasonable.";
+    err.textContent="";
+    const nice=new Date(date+"T00:00").toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+    const id="VIP-"+Math.random().toString(36).slice(2,7).toUpperCase();
+    document.getElementById('tid').textContent=id;
+    const data=[["Name",name],["Purpose",reason],["Date",nice],["Time",chosen],["Duration",dur]];
+    if(notes)data.push(["Agenda",notes]);
+    document.getElementById('rows').innerHTML=data.map(([k,v])=>'<div class="row"><span>'+k+'</span><span></span></div>').join('');
+    document.querySelectorAll('#rows .row span:last-child').forEach((s,i)=>s.textContent=data[i][1]);
+    msg="📅 APPOINTMENT REQUEST ("+id+")\n"+data.map(([k,v])=>k+": "+v).join("\n")+"\n\nI humbly request some of your very important time. 🙏";
+    document.getElementById('wa').href="https://wa.me/?text="+encodeURIComponent(msg);
+    document.getElementById('f').style.display='none';
+    document.getElementById('ticket').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  document.getElementById('copy').onclick=async e=>{
+    try{await navigator.clipboard.writeText(msg);e.target.textContent="Copied! Now paste it to me ✅"}
+    catch(_){e.target.textContent="Couldn't copy — take a screenshot instead"}
+  };
+  document.getElementById('again').onclick=()=>{
+    document.getElementById('ticket').style.display='none';
+    document.getElementById('f').style.display='block';
+    document.getElementById('copy').textContent="Copy request";
+  };
+</script>
+</body>
+</html>
