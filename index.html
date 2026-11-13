@@ -73,7 +73,7 @@
       <option>Gossip (urgent, cannot wait)</option>
       <option>Need advice I will probably ignore</option>
       <option>Rant session (bring snacks)</option>
-      <option>Apologising for calling the manager busy</option>
+      <option>Apologising for calling Anirudh busy</option>
       <option>Planning food / outing</option>
       <option>Other (please justify below)</option>
     </select>
@@ -128,7 +128,7 @@
 </div>
 
 <script>
-  const statuses=["Extremely busy (as you mentioned)","The manager is in a very important meeting with snacks","Currently being too important","Busy. Please contact the manager","Available... for Best Friends only"];
+  const statuses=["Extremely busy (as you mentioned)","Anirudh is in a very important meeting with snacks","Currently being too important","Busy. Please contact the manager","Available... for Best Friends only"];
   let si=0;setInterval(()=>{si=(si+1)%statuses.length;document.getElementById('status').textContent=statuses[si]},3000);
 
   const slots=["9:00 AM","10:30 AM","12:00 PM","2:00 PM","3:30 PM","5:00 PM","7:00 PM","9:00 PM","11:00 PM"];
