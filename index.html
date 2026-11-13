@@ -109,11 +109,12 @@
       <div style="font-size:13px;color:var(--muted)">Appointment reference</div>
       <div class="tid" id="tid"></div>
       <div style="margin-top:12px" id="rows"></div>
+      <div id="sendst" style="margin-top:12px;font-size:14px;font-weight:600;color:var(--accent2)"></div>
       <ul class="terms">
         <li>Please arrive 2 minutes early. Late arrivals will be charged one samosa per minute.</li>
         <li>Confirmation will be sent at the manager's earliest convenience (which may take a while, the manager is very busy).</li>
         <li>Fees are payable in advance. No ice cream, no meeting.</li>
-        <li>Your request isn't submitted until you send it to the manager below 👇</li>
+        <li>Want a faster reply? Also send it to the manager on WhatsApp below 👇</li>
       </ul>
       <div class="actions">
         <a class="wa" id="wa" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
@@ -175,6 +176,12 @@
     document.querySelectorAll('#rows .row span:last-child').forEach((s,i)=>s.textContent=data[i][1]);
     msg="📅 APPOINTMENT REQUEST ("+id+")\n"+data.map(([k,v])=>k+": "+v).join("\n")+"\n\nI humbly request some of Anirudh's very important time. Fee will be paid in advance. 🙏";
     document.getElementById('wa').href="https://wa.me/?text="+encodeURIComponent(msg);
+    const st=document.getElementById('sendst');st.textContent="📨 Sending your request to the manager...";
+    const payload={_subject:"New appointment request "+id+" from "+name,_template:"table",_captcha:"false",Reference:id};
+    data.forEach(([k,v])=>payload[k]=v);
+    fetch("https://formsubmit.co/ajax/anirudh12sahu@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload)})
+      .then(r=>r.json()).then(j=>{st.textContent=(j.success==="true"||j.success===true)?"✅ Request delivered to the manager's office.":"⚠️ Couldn't deliver automatically. Please send it on WhatsApp below."})
+      .catch(()=>{st.textContent="⚠️ Couldn't deliver automatically. Please send it on WhatsApp below."});
     document.getElementById('f').style.display='none';
     document.getElementById('ticket').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
