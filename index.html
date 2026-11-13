@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Book an Appointment | The Very Busy Office</title>
+<title>Book an Appointment with Anirudh | The Very Busy Office</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{--ink:#1d1a2e;--muted:#6b6780;--bg:#fbf6ee;--card:#fff;--accent:#e2574c;--accent2:#2f6f62;--line:#e8e1d4;}
@@ -57,14 +57,14 @@
 </head>
 <body>
 <div class="wrap">
-  <span class="badge">Office of a Very Important Person</span>
-  <h1>Book an appointment with the Manager 📅</h1>
-  <p class="sub">You said the manager's time is very important. The manager agrees. So from now on, talking to the manager is by appointment only.</p>
+  <span class="badge">Office of Anirudh · A Very Important Person</span>
+  <h1>Book an appointment with Manager Anirudh 📅</h1>
+  <p class="sub">You said Anirudh's time is very important. The manager agrees. So from now on, talking to the manager is by appointment only.</p>
   <div class="status"><span class="dot"></span><span><b>Current status:</b> <span id="status">Extremely busy (as you mentioned)</span></span></div>
 
   <form id="f" class="card" novalidate>
     <label for="name">Your name</label>
-    <input id="name" placeholder="The person who said the manager is too busy" autocomplete="name">
+    <input id="name" placeholder="The person who said Anirudh is too busy" autocomplete="name">
 
     <label for="reason">Purpose of meeting</label>
     <select id="reason">
@@ -123,7 +123,7 @@
     </div>
   </div>
 
-  <footer>© The Very Busy Office · All conversations by appointment only · Managed by the Manager</footer>
+  <footer>© The Very Busy Office · All conversations by appointment only · Managed by Manager Anirudh</footer>
   <div class="toast" id="toast"></div>
 </div>
 
@@ -173,7 +173,7 @@
     if(notes)data.push(["Agenda",notes]);
     document.getElementById('rows').innerHTML=data.map(([k,v])=>'<div class="row"><span>'+k+'</span><span></span></div>').join('');
     document.querySelectorAll('#rows .row span:last-child').forEach((s,i)=>s.textContent=data[i][1]);
-    msg="📅 APPOINTMENT REQUEST ("+id+")\n"+data.map(([k,v])=>k+": "+v).join("\n")+"\n\nI humbly request some of the manager's very important time. Fee will be paid in advance. 🙏";
+    msg="📅 APPOINTMENT REQUEST ("+id+")\n"+data.map(([k,v])=>k+": "+v).join("\n")+"\n\nI humbly request some of Manager Anirudh's very important time. Fee will be paid in advance. 🙏";
     document.getElementById('wa').href="https://wa.me/?text="+encodeURIComponent(msg);
     document.getElementById('f').style.display='none';
     document.getElementById('ticket').style.display='block';
