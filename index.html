@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Book an Appointment — The Very Busy Office</title>
+<title>Book an Appointment | The Very Busy Office</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{--ink:#1d1a2e;--muted:#6b6780;--bg:#fbf6ee;--card:#fff;--accent:#e2574c;--accent2:#2f6f62;--line:#e8e1d4;}
@@ -25,8 +25,9 @@
   .slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
   .slot{padding:10px;border:1px solid var(--line);border-radius:10px;background:#fffdf9;text-align:center;cursor:pointer;font-size:14px;user-select:none}
   .slot small{display:block;font-size:11px;color:var(--muted)}
-  .slot.taken{background:#f3f1ec;color:#aaa;cursor:not-allowed;text-decoration:line-through}
-  .slot.taken small{text-decoration:none}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:14px 18px;border-radius:14px;font-size:14px;max-width:90%;width:420px;text-align:center;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:9}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .rate{display:block;font-size:12px;color:var(--accent2);font-weight:600;margin-top:2px}
   .slot.sel{border-color:var(--accent2);background:#e8f3f0;color:var(--accent2);font-weight:600}
   .dur{display:flex;flex-direction:column;gap:8px}
   .opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:400;margin:0}
@@ -57,44 +58,46 @@
 <body>
 <div class="wrap">
   <span class="badge">Office of a Very Important Person</span>
-  <h1>Book an appointment with me 📅</h1>
-  <p class="sub">You said my time is very important. I agree. So from now on, talking to me is by appointment only.</p>
+  <h1>Book an appointment with the Manager 📅</h1>
+  <p class="sub">You said the manager's time is very important. The manager agrees. So from now on, talking to the manager is by appointment only.</p>
   <div class="status"><span class="dot"></span><span><b>Current status:</b> <span id="status">Extremely busy (as you mentioned)</span></span></div>
 
   <form id="f" class="card" novalidate>
     <label for="name">Your name</label>
-    <input id="name" placeholder="The person who said I'm too busy" autocomplete="name">
+    <input id="name" placeholder="The person who said the manager is too busy" autocomplete="name">
 
     <label for="reason">Purpose of meeting</label>
     <select id="reason">
-      <option value="">— Select a valid reason —</option>
+      <option value="">Select a valid reason</option>
       <option>Just to talk (high-level discussion)</option>
       <option>Gossip (urgent, cannot wait)</option>
       <option>Need advice I will probably ignore</option>
       <option>Rant session (bring snacks)</option>
-      <option>Apologising for calling me busy</option>
+      <option>Apologising for calling the manager busy</option>
       <option>Planning food / outing</option>
       <option>Other (please justify below)</option>
     </select>
 
     <label for="date">Preferred date</label>
     <input id="date" type="date">
-    <div class="hint">Weekends subject to availability and mood.</div>
+    <div class="hint">Weekends subject to availability and the manager's mood.</div>
 
     <label>Available time slots</label>
+    <div class="hint" style="margin:-2px 0 8px">Tip: choose your plan first.</div>
     <div class="slots" id="slots"></div>
 
     <label>Meeting duration</label>
     <div class="dur">
-      <label class="opt"><input type="radio" name="dur" value="5 minutes (Standard)" checked><span><b>5 minutes</b> — Standard. Please be concise.</span></label>
-      <label class="opt"><input type="radio" name="dur" value="15 minutes (Premium)"><span><b>15 minutes</b> — Premium. Requires chocolate in advance.</span></label>
-      <label class="opt"><input type="radio" name="dur" value="Unlimited (Best Friend Plan)"><span><b>Unlimited</b> — Best Friend Plan. Subject to manager approval (me).</span></label>
+      <label class="opt"><input type="radio" name="dur" value="5 minutes (Standard) | Fee: 1 ice cream" checked><span><b>5 minutes: Standard.</b> Please be concise.<span class="rate">Fee: 1 ice cream 🍦</span></span></label>
+      <label class="opt"><input type="radio" name="dur" value="15 minutes (Premium) | Fee: ice cream + pizza"><span><b>15 minutes: Premium.</b> Priority listening included.<span class="rate">Fee: ice cream 🍦 + pizza 🍕</span></span></label>
+      <label class="opt"><input type="radio" name="dur" value="1 hour (Executive) | Fee: ice cream + pizza + chocolate cake"><span><b>1 hour: Executive.</b> Includes full gossip access.<span class="rate">Fee: ice cream 🍦 + pizza 🍕 + chocolate cake 🎂</span></span></label>
+      <label class="opt"><input type="radio" name="dur" value="Unlimited (Best Friend Plan) | Fee: ice cream + pizza + cake + a full outing"><span><b>Unlimited: Best Friend Plan.</b> Subject to manager approval.<span class="rate">Fee: ice cream 🍦 + pizza 🍕 + cake 🎂 + a full outing 🎉</span></span></label>
     </div>
 
     <label for="notes">Agenda / anything else</label>
     <textarea id="notes" placeholder="Kindly submit agenda in advance so I can prepare."></textarea>
 
-    <label class="chk" style="margin-top:18px"><input type="checkbox" id="agree"><span>I accept that my appointment may be rescheduled, and I agree to never again pretend I don't know how important this person's time is.</span></label>
+    <label class="chk" style="margin-top:18px"><input type="checkbox" id="agree"><span>I accept that my appointment may be rescheduled by the manager, and I agree to pay the full fee in snacks before the meeting begins.</span></label>
 
     <button class="primary" type="submit">Request appointment</button>
     <div class="err" id="err"></div>
@@ -108,8 +111,9 @@
       <div style="margin-top:12px" id="rows"></div>
       <ul class="terms">
         <li>Please arrive 2 minutes early. Late arrivals will be charged one samosa per minute.</li>
-        <li>Confirmation will be sent at my earliest convenience (which may be a while, I'm very busy).</li>
-        <li>Your request isn't sent until you send it to me below 👇</li>
+        <li>Confirmation will be sent at the manager's earliest convenience (which may take a while, the manager is very busy).</li>
+        <li>Fees are payable in advance. No ice cream, no meeting.</li>
+        <li>Your request isn't submitted until you send it to the manager below 👇</li>
       </ul>
       <div class="actions">
         <a class="wa" id="wa" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
@@ -119,26 +123,30 @@
     </div>
   </div>
 
-  <footer>© The Very Busy Office · All conversations by appointment only</footer>
+  <footer>© The Very Busy Office · All conversations by appointment only · Managed by the Manager</footer>
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
-  const statuses=["Extremely busy (as you mentioned)","In a very important meeting with my snacks","Currently being too important","Busy. Ask my assistant (also me)","Available… for VIPs only"];
+  const statuses=["Extremely busy (as you mentioned)","The manager is in a very important meeting with snacks","Currently being too important","Busy. Please contact the manager","Available... for Best Friends only"];
   let si=0;setInterval(()=>{si=(si+1)%statuses.length;document.getElementById('status').textContent=statuses[si]},3000);
 
-  const slots=[
-    ["9:00 AM","Sleeping",true],["10:30 AM","Available",false],["12:00 PM","Lunch — sacred",true],
-    ["2:00 PM","Available",false],["3:30 PM","Nap meeting",true],["5:00 PM","Available",false],
-    ["7:00 PM","Chai break",false],["9:00 PM","Series time",true],["11:00 PM","Late-night talk",false]
-  ];
-  let chosen="";
+  const slots=["9:00 AM","10:30 AM","12:00 PM","2:00 PM","3:30 PM","5:00 PM","7:00 PM","9:00 PM","11:00 PM"];
+  let chosen="";let tt;
+  const toast=t=>{const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),3200)};
+  const isBF=()=>document.querySelector('input[name=dur]:checked').value.startsWith('Unlimited');
   const box=document.getElementById('slots');
-  slots.forEach(([t,s,taken])=>{
-    const d=document.createElement('div');d.className='slot'+(taken?' taken':'');
-    d.innerHTML=t+'<small>'+s+'</small>';
-    if(!taken)d.onclick=()=>{document.querySelectorAll('.slot').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');chosen=t};
+  slots.forEach(t=>{
+    const d=document.createElement('div');d.className='slot';
+    d.innerHTML=t+'<small>Available</small>';
+    d.onclick=()=>{
+      if(!isBF()){toast("🚫 Sorry, this slot is unavailable. It's only available for Best Friends.");return}
+      document.querySelectorAll('.slot').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');chosen=t;
+      toast("✅ Best Friend slot reserved. Pending manager approval.");
+    };
     box.appendChild(d);
   });
+  document.querySelectorAll('input[name=dur]').forEach(r=>r.addEventListener('change',()=>{if(!isBF()){chosen="";document.querySelectorAll('.slot').forEach(x=>x.classList.remove('sel'))}}));
   const dt=document.getElementById('date');
   const today=new Date();today.setMinutes(today.getMinutes()-today.getTimezoneOffset());
   dt.min=today.toISOString().slice(0,10);
@@ -155,7 +163,7 @@
     if(!name)return err.textContent="Name is required. I don't talk to strangers.";
     if(!reason)return err.textContent="Please select a valid reason. 'Just because' is not accepted.";
     if(!date)return err.textContent="Please pick a date.";
-    if(!chosen)return err.textContent="Please pick an available time slot.";
+    if(!chosen)return err.textContent="Please pick a time slot. (Hint: slots are only available for Best Friends.)";
     if(!document.getElementById('agree').checked)return err.textContent="You must accept the terms. They are very reasonable.";
     err.textContent="";
     const nice=new Date(date+"T00:00").toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
@@ -165,15 +173,15 @@
     if(notes)data.push(["Agenda",notes]);
     document.getElementById('rows').innerHTML=data.map(([k,v])=>'<div class="row"><span>'+k+'</span><span></span></div>').join('');
     document.querySelectorAll('#rows .row span:last-child').forEach((s,i)=>s.textContent=data[i][1]);
-    msg="📅 APPOINTMENT REQUEST ("+id+")\n"+data.map(([k,v])=>k+": "+v).join("\n")+"\n\nI humbly request some of your very important time. 🙏";
+    msg="📅 APPOINTMENT REQUEST ("+id+")\n"+data.map(([k,v])=>k+": "+v).join("\n")+"\n\nI humbly request some of the manager's very important time. Fee will be paid in advance. 🙏";
     document.getElementById('wa').href="https://wa.me/?text="+encodeURIComponent(msg);
     document.getElementById('f').style.display='none';
     document.getElementById('ticket').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
   });
   document.getElementById('copy').onclick=async e=>{
-    try{await navigator.clipboard.writeText(msg);e.target.textContent="Copied! Now paste it to me ✅"}
-    catch(_){e.target.textContent="Couldn't copy — take a screenshot instead"}
+    try{await navigator.clipboard.writeText(msg);e.target.textContent="Copied! Now paste it to the manager ✅"}
+    catch(_){e.target.textContent="Couldn't copy, take a screenshot instead"}
   };
   document.getElementById('again').onclick=()=>{
     document.getElementById('ticket').style.display='none';
